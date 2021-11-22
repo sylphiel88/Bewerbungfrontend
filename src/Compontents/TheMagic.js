@@ -13,11 +13,11 @@ function TheMagic(props) {
 	const [ compStreet, setCompStreet ] = useState('');
 	const [ compTown, setCompTown ] = useState('');
 	const [ compCorrect, setCompCorrect ] = useState(false);
-	const [ color1, setColor1 ] = useState();
+	const [ color1, setColor1 ] = useState('#000000');
 	const [ red1, setRed1 ] = useState(0);
 	const [ green1, setGreen1 ] = useState(0);
 	const [ blue1, setBlue1 ] = useState(0);
-	const [ color2, setColor2 ] = useState();
+	const [ color2, setColor2 ] = useState('#808080');
 	const [ red2, setRed2 ] = useState(0);
 	const [ green2, setGreen2 ] = useState(0);
 	const [ blue2, setBlue2 ] = useState(0);
@@ -28,19 +28,23 @@ function TheMagic(props) {
 	const [ html, setHtml ] = useState('');
 	const [ download, setDownload ] = useState(false);
 	const [ downloadLoc, setDownloadLoc ] = useState('');
+	const [ style1, setStyle1 ] = useState({ border: '1px outset ' + color2, backgroundColor: color1, color: 'white' });
+	const [ style2, setStyle2 ] = useState({ border: '1px outset ' + color1, backgroundColor: color2, color: 'white' });
+	const [ style3, setStyle3 ] = useState({ border: '1px outset ' + color1, color: 'white' });
+	const [ style4, setStyle4 ] = useState({ textDecoration: 'none', color: 'white' });
 
 	useEffect(
 		async () => {
 			const values = compAddr.split('\n');
 			if (values.length > 0) {
-				setReference(values[0]);
-			} else {
-				setReference('');
-			}
-			if (values.length > 1) {
-				setCompName(values[1]);
+				setCompName(values[0]);
 			} else {
 				setCompName('');
+			}
+			if (values.length > 1) {
+				setReference(values[1]);
+			} else {
+				setReference('');
 			}
 			if (values.length > 2) {
 				setCompStreet(values[2]);
@@ -70,6 +74,18 @@ function TheMagic(props) {
 	useEffect(
 		async () => {
 			if (color1 != undefined) {
+				var colorBool = deterMine(color1);
+				if (colorBool) {
+					setStyle1({ border: '1px outset ' + color2, backgroundColor: color1 });
+					setStyle2({ border: '1px outset ' + color1, backgroundColor: color2 });
+					setStyle3({ border: '1px outset ' + color1 });
+					setStyle4({ textDecoration: 'none' });
+				} else {
+					setStyle1({ border: '1px outset ' + color2, backgroundColor: color1, color: 'white' });
+					setStyle2({ border: '1px outset ' + color1, backgroundColor: color2, color: 'white' });
+					setStyle3({ border: '1px outset ' + color1, color: 'white' });
+					setStyle4({ textDecoration: 'none', color: 'white' });
+				}
 				var text = color1.replace('#', '');
 				setRed1(parseInt(text.substr(0, 2), 16));
 				setGreen1(parseInt(text.substr(2, 2), 16));
@@ -82,6 +98,22 @@ function TheMagic(props) {
 	useEffect(
 		async () => {
 			if (color2 != undefined) {
+				if (color1 != undefined) {
+					var colorBool = deterMine(color1);
+				} else {
+					colorBool = true;
+				}
+				if (colorBool) {
+					setStyle1({ border: '2px outset ' + color2, backgroundColor: color1 });
+					setStyle2({ border: '2px outset ' + color1, backgroundColor: color2 });
+					setStyle3({ border: '2px outset ' + color1 });
+					setStyle4({ textDecoration: 'none' });
+				} else {
+					setStyle1({ border: '2px outset ' + color2, backgroundColor: color1, color: 'white' });
+					setStyle2({ border: '2px outset ' + color1, backgroundColor: color2, color: 'white' });
+					setStyle3({ border: '2px outset ' + color1, color: 'white' });
+					setStyle4({ textDecoration: 'none', color: 'white' });
+				}
 				var text = color2.replace('#', '');
 				setRed2(parseInt(text.substr(0, 2), 16));
 				setGreen2(parseInt(text.substr(2, 2), 16));
@@ -189,9 +221,23 @@ function TheMagic(props) {
 		setAbsatz(e.target.value);
 	}
 
-	function setDownloadHandler(fileUrl){
+	function setDownloadHandler(fileUrl) {
 		setDownload(true);
-		setDownloadLoc(fileUrl)
+		setDownloadLoc(fileUrl);
+	}
+
+	function deterMine(color) {
+		color = +('0x' + color.slice(1).replace(color.length < 5 && /./g, '$&$&'));
+
+		var r = color >> 16;
+		var g = (color >> 8) & 255;
+		var b = color & 255;
+		var hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
+		if (hsp > 127.5) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	async function sendHandler() {
@@ -253,7 +299,7 @@ function TheMagic(props) {
 
 	return (
 		<div className="container">
-			<div className="functions">
+			<div className="functions" style={style1}>
 				<Functions
 					compCorrect={compCorrect}
 					myName={myName}
@@ -267,7 +313,12 @@ function TheMagic(props) {
 					absatzHandler={absatzHandler}
 					sendHandler={sendHandler}
 					download={download}
-					downloadLoc={downloadLoc} 
+					downloadLoc={downloadLoc}
+					style1={style1}
+					style2={style2}
+					style3={style4}
+					color1={color1}
+					color2={color2}
 				/>
 			</div>
 			<div className="preview">
