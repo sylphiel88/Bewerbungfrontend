@@ -75,30 +75,33 @@
   background-color: rgb(255, 115, 0);
 }
 
+.textAreaComp {
+  display: flex;
+  float: left;
+  width: 20vw !important;
+}
+
 .compAddr{
+  display: flex;
+  float: left;
   border: none;
   outline: none;
   box-shadow: none;
   border-radius: 15px;
   padding-left: 10px;
   padding-top: 10px;
+  height: 8vh !important;
   resize: none;
-  width: 100vw;
-}
-
-.textAreaComp {
-  float: left;
-  width: 10vw;
-  height: auto;
 }
 
 .textAreaCompExpl {
   float: left;
-  width: 10vw;
-  height: 12.8vh;
+  width: 15vw;
+  height: 8vh;
   border-radius: 15px;
   padding-left: 10px;
   padding-top: 10px;
+  margin-left: 2vw;
 }
 
 .rot {
@@ -112,8 +115,8 @@
 }
 
 .compWrapper {
-  width: 22vw;
-  height: 10vh;
+  width: 32vw;
+  height: 8vh;
 }
 
 .colorPicker1{
