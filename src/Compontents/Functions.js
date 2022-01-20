@@ -42,6 +42,7 @@ function Functions(props) {
             <textarea class="absatz1" id="absatz1" value={props.absatz} onChange={props.absatzHandler} style={props.style1}></textarea>
             <br/>
             <div class="sendButton" onClick={props.sendHandler} style={props.style1}>Absenden</div>
+			<div class="send2Button" onClick={props.send2Handler} style={props.style1}>Firma registrieren</div>
 			{props.download&&<div class="send2Button" style={props.style1}><a style={props.style3} href={props.downloadLoc} download>PDF Herunterladen</a></div>}
 		</div>
 	);

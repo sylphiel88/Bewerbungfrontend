@@ -279,12 +279,9 @@ function TheMagic(props) {
 						}
 					})
 					.then((response) => {
-						//Create a Blob from the PDF Stream
 						const file = new Blob([ response.data ], { type: 'application/pdf' });
-						//Build a URL from the file
 						const fileURL = URL.createObjectURL(file);
 						setDownloadHandler(fileURL);
-						//Open the URL on new Window
 						var w = window.open('');
 						w.location.href = fileURL;
 					})
@@ -295,6 +292,27 @@ function TheMagic(props) {
 				console.log(error);
 			}
 		}, 3000);
+	}
+
+	async function send2Handler(){
+		await axios
+			.post(
+				'http://localhost:5000/api/v1/bewerbungen/',
+				{
+					compN: compName,
+					addr: compStreet+"|"+compTown,
+					bw: false,
+					status: "offen",
+					anm:"",
+					color1: color1,
+					color2: color2
+				},
+				{
+					header: {
+						ContentType: 'application/json'
+					}
+				}
+			)
 	}
 
 	return (
@@ -312,6 +330,7 @@ function TheMagic(props) {
 					abstatz={absatz}
 					absatzHandler={absatzHandler}
 					sendHandler={sendHandler}
+					send2Handler={send2Handler}
 					download={download}
 					downloadLoc={downloadLoc}
 					style1={style1}
